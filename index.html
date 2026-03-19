@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>VANZ — Street Culture</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #080808;
+      --white: #f5f0e8;
+      --red: #c8001e;
+      --gray: #1a1a1a;
+      --muted: #555;
+      --border: #2a2a2a;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; width: 100%; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 48px;
+      background: rgba(8,8,8,0.85);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 32px;
+      letter-spacing: 6px;
+      color: var(--white);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--red); }
+
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--white); }
+
+    .nav-cart {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: var(--white);
+      background: var(--red);
+      border: none;
+      padding: 10px 22px;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: background 0.2s;
+    }
+    .nav-cart:hover { background: #a50018; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: flex-end;
+      padding: 0 48px 80px;
+      position: relative;
+      overflow: hidden;
+      background: var(--black);
+    }
+
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        repeating-linear-gradient(0deg, transparent, transparent 59px, #1a1a1a 60px),
+        repeating-linear-gradient(90deg, transparent, transparent 59px, #111 60px);
+      opacity: 0.5;
+    }
+
+    .hero-noise {
+      position: absolute; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+      opacity: 0.3;
+    }
+
+    .hero-accent {
+      position: absolute;
+      top: -100px; right: -100px;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(200,0,30,0.15) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .hero-tag {
+      position: absolute; top: 120px; right: 48px;
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: var(--muted);
+      text-transform: uppercase;
+      writing-mode: vertical-rl;
+    }
+
+    .hero-content { position: relative; z-index: 1; }
+
+    .hero-sub {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 5px;
+      color: var(--red);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(96px, 14vw, 180px);
+      line-height: 0.88;
+      letter-spacing: 2px;
+      color: var(--white);
+    }
+
+    .hero-title .outline {
+      -webkit-text-stroke: 1px var(--white);
+      color: transparent;
+    }
+
+    .hero-desc {
+      font-size: 14px;
+      color: var(--muted);
+      max-width: 320px;
+      line-height: 1.8;
+      margin: 28px 0 40px;
+      letter-spacing: 0.5px;
+    }
+
+    .hero-cta {
+      display: flex; align-items: center; gap: 24px;
+    }
+
+    .btn-primary {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--black);
+      background: var(--white);
+      padding: 16px 40px;
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s;
+      display: inline-block;
+    }
+    .btn-primary:hover { background: var(--red); color: var(--white); }
+
+    .btn-ghost {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      display: flex; align-items: center; gap: 8px;
+      transition: color 0.2s;
+    }
+    .btn-ghost:hover { color: var(--white); }
+    .btn-ghost::after { content: '→'; }
+
+    .hero-scroll {
+      position: absolute; bottom: 40px; left: 50%;
+      transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+    }
+    .hero-scroll span {
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 3px;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+    .scroll-line {
+      width: 1px; height: 48px;
+      background: linear-gradient(to bottom, var(--muted), transparent);
+      animation: scrollDown 1.5s ease-in-out infinite;
+    }
+    @keyframes scrollDown {
+      0% { transform: scaleY(0); transform-origin: top; }
+      50% { transform: scaleY(1); transform-origin: top; }
+      51% { transform: scaleY(1); transform-origin: bottom; }
+      100% { transform: scaleY(0); transform-origin: bottom; }
+    }
+
+    /* ── TICKER ── */
+    .ticker {
+      background: var(--red);
+      overflow: hidden;
+      white-space: nowrap;
+      padding: 12px 0;
+    }
+    .ticker-track {
+      display: inline-block;
+      animation: ticker 18s linear infinite;
+    }
+    .ticker-track span {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 15px;
+      letter-spacing: 4px;
+      color: var(--white);
+      margin: 0 40px;
+    }
+    @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* ── SECTION HEADER ── */
+    .section { padding: 100px 48px; }
+    .section-header {
+      display: flex; align-items: flex-end; justify-content: space-between;
+      margin-bottom: 56px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 24px;
+    }
+    .section-num {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 3px;
+      color: var(--muted);
+    }
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(42px, 6vw, 72px);
+      letter-spacing: 3px;
+      color: var(--white);
+    }
+    .section-link {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: var(--muted);
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .section-link:hover { color: var(--red); }
+
+    /* ── PRODUCTS ── */
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 2px;
+    }
+
+    .product-card {
+      background: var(--gray);
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+      group: true;
+    }
+
+    .product-image {
+      width: 100%;
+      aspect-ratio: 3/4;
+      object-fit: cover;
+      filter: grayscale(20%);
+      transition: transform 0.5s ease, filter 0.3s;
+      display: block;
+    }
+    .product-card:hover .product-image {
+      transform: scale(1.04);
+      filter: grayscale(0%);
+    }
+
+    .product-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 50%);
+    }
+
+    .product-info {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 24px;
+    }
+
+    .product-tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 3px;
+      color: var(--red);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .product-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      letter-spacing: 2px;
+      color: var(--white);
+    }
+
+    .product-price {
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .product-add {
+      position: absolute;
+      top: 20px; right: 20px;
+      width: 36px; height: 36px;
+      background: var(--red);
+      color: var(--white);
+      font-size: 20px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity 0.2s;
+      border: none;
+    }
+    .product-card:hover .product-add { opacity: 1; }
+
+    /* ── FEATURE BANNER ── */
+    .feature-banner {
+      background: var(--gray);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 100px 48px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .feature-big {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(60px, 9vw, 120px);
+      line-height: 0.9;
+      color: var(--white);
+      letter-spacing: 2px;
+    }
+    .feature-big span { color: var(--red); }
+
+    .feature-text p {
+      font-size: 15px;
+      line-height: 1.9;
+      color: var(--muted);
+      margin-bottom: 32px;
+    }
+
+    .feature-stats {
+      display: flex; gap: 40px;
+      margin-top: 40px;
+    }
+
+    .stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 40px;
+      color: var(--white);
+      letter-spacing: 2px;
+    }
+    .stat-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    /* ── DROPS ── */
+    .drops-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 2px;
+    }
+
+    .drop-main {
+      aspect-ratio: 16/9;
+      background: var(--gray);
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .drop-side {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .drop-small {
+      flex: 1;
+      background: var(--gray);
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .drop-img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      filter: grayscale(30%) brightness(0.6);
+      transition: filter 0.4s;
+      display: block;
+    }
+    .drop-main:hover .drop-img,
+    .drop-small:hover .drop-img { filter: grayscale(0%) brightness(0.75); }
+
+    .drop-label {
+      position: absolute;
+      bottom: 24px; left: 24px;
+    }
+    .drop-label-tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 3px;
+      color: var(--red);
+      text-transform: uppercase;
+    }
+    .drop-label-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      letter-spacing: 2px;
+      color: var(--white);
+      margin-top: 4px;
+    }
+
+    .coming-soon-badge {
+      position: absolute;
+      top: 20px; right: 20px;
+      background: var(--red);
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: var(--white);
+      padding: 6px 12px;
+      text-transform: uppercase;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--gray);
+      border-top: 1px solid var(--border);
+      padding: 60px 48px 40px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 56px;
+    }
+
+    .footer-brand-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 48px;
+      letter-spacing: 6px;
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+    .footer-brand-name span { color: var(--red); }
+
+    .footer-brand-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.8;
+      max-width: 240px;
+    }
+
+    .footer-col-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--white);
+      margin-bottom: 20px;
+    }
+
+    .footer-links { list-style: none; }
+    .footer-links li { margin-bottom: 12px; }
+    .footer-links a {
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--red); }
+
+    .footer-bottom {
+      border-top: 1px solid var(--border);
+      padding-top: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-copy {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    /* ── PLACEHOLDER IMAGES using CSS art ── */
+    .img-placeholder {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 18px;
+      letter-spacing: 4px;
+      color: rgba(245,240,232,0.15);
+      user-select: none;
+    }
+
+    .bg-01 { background: linear-gradient(135deg, #111 0%, #222 100%); }
+    .bg-02 { background: linear-gradient(135deg, #1a0a08 0%, #2a1010 100%); }
+    .bg-03 { background: linear-gradient(135deg, #0a0a14 0%, #14142a 100%); }
+    .bg-04 { background: linear-gradient(135deg, #0a120a 0%, #0f1f0f 100%); }
+    .bg-05 { background: linear-gradient(135deg, #1a1205 0%, #2a1e08 100%); }
+    .bg-06 { background: linear-gradient(135deg, #180010 0%, #280020 100%); }
+
+    /* shape art for product cards */
+    .card-art {
+      width: 100%; aspect-ratio: 3/4;
+      position: relative; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .card-art-circle {
+      width: 120px; height: 120px;
+      border-radius: 50%;
+      border: 1px solid rgba(245,240,232,0.08);
+    }
+    .card-art-text {
+      position: absolute;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 80px;
+      letter-spacing: -2px;
+      color: rgba(245,240,232,0.06);
+      user-select: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      nav { padding: 16px 24px; }
+      .nav-links { display: none; }
+      .hero { padding: 0 24px 80px; }
+      .section { padding: 60px 24px; }
+      .feature-banner { grid-template-columns: 1fr; padding: 60px 24px; gap: 40px; }
+      .drops-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .hero-tag { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">VAN<span>Z</span></a>
+    <ul class="nav-links">
+      <li><a href="#new">New Drops</a></li>
+      <li><a href="#collection">Collection</a></li>
+      <li><a href="#lookbook">Lookbook</a></li>
+      <li><a href="#about">About</a></li>
+    </ul>
+    <button class="nav-cart">Cart (0)</button>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-noise"></div>
+    <div class="hero-accent"></div>
+    <div class="hero-tag">SS 2026 Collection</div>
+
+    <div class="hero-content">
+      <p class="hero-sub">New Collection — Drop 01</p>
+      <h1 class="hero-title">
+        WEAR<br>
+        <span class="outline">THE</span><br>
+        STREETS
+      </h1>
+      <p class="hero-desc">
+        Uncompromising streetwear for those who live
+        outside the lines. Built raw. Worn hard.
+      </p>
+      <div class="hero-cta">
+        <a href="#collection" class="btn-primary">Shop Now</a>
+        <a href="#new" class="btn-ghost">See New Drops</a>
+      </div>
+    </div>
+
+    <div class="hero-scroll">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- TICKER -->
+  <div class="ticker">
+    <div class="ticker-track">
+      <span>VANZ</span><span>Street Culture</span><span>New Drop</span>
+      <span>SS 2026</span><span>Limited Edition</span><span>VANZ</span>
+      <span>Urban Wear</span><span>Authentic</span><span>Raw</span>
+      <span>VANZ</span><span>Street Culture</span><span>New Drop</span>
+      <span>SS 2026</span><span>Limited Edition</span><span>VANZ</span>
+      <span>Urban Wear</span><span>Authentic</span><span>Raw</span>
+    </div>
+  </div>
+
+  <!-- COLLECTION -->
+  <section class="section" id="collection">
+    <div class="section-header">
+      <div>
+        <p class="section-num">01 / Collection</p>
+        <h2 class="section-title">Latest Drops</h2>
+      </div>
+      <a href="#" class="section-link">View All →</a>
+    </div>
+
+    <div class="products-grid">
+
+      <!-- Card 1 -->
+      <div class="product-card">
+        <div class="card-art bg-02" style="aspect-ratio:3/4;">
+          <div class="card-art-text">V</div>
+          <div style="width:90px;height:90px;border:1px solid rgba(200,0,30,0.3);transform:rotate(45deg);position:absolute;"></div>
+          <div style="width:60px;height:60px;border:1px solid rgba(245,240,232,0.1);transform:rotate(45deg);position:absolute;"></div>
+        </div>
+        <div class="product-overlay"></div>
+        <div class="product-info">
+          <p class="product-tag">Outerwear</p>
+          <p class="product-name">Phantom Oversized Jacket</p>
+          <p class="product-price">₹4,999</p>
+        </div>
+        <button class="product-add">+</button>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="product-card">
+        <div class="card-art bg-03" style="aspect-ratio:3/4;">
+          <div class="card-art-text">A</div>
+          <div style="width:100px;height:100px;border-radius:50%;border:1px solid rgba(245,240,232,0.1);position:absolute;"></div>
+          <div style="width:50px;height:50px;border-radius:50%;background:rgba(200,0,30,0.15);position:absolute;"></div>
+        </div>
+        <div class="product-overlay"></div>
+        <div class="product-info">
+          <p class="product-tag">Tops</p>
+          <p class="product-name">Void Graphic Tee</p>
+          <p class="product-price">₹1,499</p>
+        </div>
+        <button class="product-add">+</button>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="product-card">
+        <div class="card-art bg-01" style="aspect-ratio:3/4;">
+          <div class="card-art-text">N</div>
+          <div style="width:80px;height:2px;background:rgba(200,0,30,0.5);position:absolute;top:40%;"></div>
+          <div style="width:2px;height:80px;background:rgba(200,0,30,0.5);position:absolute;left:50%;"></div>
+        </div>
+        <div class="product-overlay"></div>
+        <div class="product-info">
+          <p class="product-tag">Bottoms</p>
+          <p class="product-name">Reaper Cargo Pants</p>
+          <p class="product-price">₹3,299</p>
+        </div>
+        <button class="product-add">+</button>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="product-card">
+        <div class="card-art bg-04" style="aspect-ratio:3/4;">
+          <div class="card-art-text">Z</div>
+          <div style="width:0;height:0;border-left:50px solid transparent;border-right:50px solid transparent;border-bottom:80px solid rgba(245,240,232,0.06);position:absolute;"></div>
+        </div>
+        <div class="product-overlay"></div>
+        <div class="product-info">
+          <p class="product-tag">Accessories</p>
+          <p class="product-name">Stealth Bucket Hat</p>
+          <p class="product-price">₹999</p>
+        </div>
+        <button class="product-add">+</button>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="product-card">
+        <div class="card-art bg-05" style="aspect-ratio:3/4;">
+          <div class="card-art-text">V</div>
+          <div style="width:70px;height:70px;border:2px solid rgba(200,0,30,0.3);position:absolute;transform:rotate(15deg);"></div>
+          <div style="width:40px;height:40px;border:1px solid rgba(245,240,232,0.1);position:absolute;transform:rotate(-10deg);"></div>
+        </div>
+        <div class="product-overlay"></div>
+        <div class="product-info">
+          <p class="product-tag">Hoodies</p>
+          <p class="product-name">Blacktop Hoodie</p>
+          <p class="product-price">₹2,799</p>
+        </div>
+        <button class="product-add">+</button>
+      </div>
+
+      <!-- Card 6 -->
+      <div class="product-card">
+        <div class="card-art bg-06" style="aspect-ratio:3/4;">
+          <div class="card-art-text">Z</div>
+          <div style="width:90px;height:90px;border-radius:50%;border:1px solid rgba(200,0,30,0.4);position:absolute;animation:spin 8s linear infinite;"></div>
+        </div>
+        <div class="product-overlay"></div>
+        <div class="product-info">
+          <p class="product-tag">Limited</p>
+          <p class="product-name">Gravel Washed Shorts</p>
+          <p class="product-price">₹1,899</p>
+        </div>
+        <button class="product-add">+</button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FEATURE BANNER -->
+  <div class="feature-banner" id="about">
+    <div>
+      <p class="feature-big">BORN<br>IN THE<br><span>DARK.</span></p>
+      <div class="feature-stats">
+        <div>
+          <p class="stat-num">2021</p>
+          <p class="stat-label">Founded</p>
+        </div>
+        <div>
+          <p class="stat-num">100%</p>
+          <p class="stat-label">Original</p>
+        </div>
+        <div>
+          <p class="stat-num">50K+</p>
+          <p class="stat-label">Community</p>
+        </div>
+      </div>
+    </div>
+    <div class="feature-text">
+      <p>
+        VANZ was built in a garage with one rule:
+        never make something you wouldn't wear yourself.
+        No trends. No compromise. Just raw street energy
+        cut into every stitch.
+      </p>
+      <p>
+        Every piece is designed to outlast the season,
+        the trend, and the hype. We're not here to follow —
+        we're here to set.
+      </p>
+      <a href="#collection" class="btn-primary">Explore Collection</a>
+    </div>
+  </div>
+
+  <!-- NEW DROPS -->
+  <section class="section" id="new">
+    <div class="section-header">
+      <div>
+        <p class="section-num">02 / New Drops</p>
+        <h2 class="section-title">Coming Soon</h2>
+      </div>
+      <a href="#" class="section-link">Notify Me →</a>
+    </div>
+
+    <div class="drops-grid">
+      <div class="drop-main">
+        <div class="drop-img bg-02" style="height:100%;position:relative;display:flex;align-items:center;justify-content:center;">
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:120px;letter-spacing:-4px;color:rgba(245,240,232,0.05);">DROP</div>
+          <div style="position:absolute;width:200px;height:200px;border:1px solid rgba(200,0,30,0.2);transform:rotate(45deg);"></div>
+        </div>
+        <div class="drop-label">
+          <p class="drop-label-tag">SS 2026 — Drop 02</p>
+          <p class="drop-label-title">SHADOW SERIES</p>
+        </div>
+        <div class="coming-soon-badge">JUNE 2026</div>
+      </div>
+
+      <div class="drop-side">
+        <div class="drop-small">
+          <div class="drop-img bg-03" style="height:100%;display:flex;align-items:center;justify-content:center;">
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:60px;color:rgba(245,240,232,0.05);">VOID</div>
+          </div>
+          <div class="drop-label">
+            <p class="drop-label-tag">Capsule</p>
+            <p class="drop-label-title" style="font-size:20px;">VOID PACK</p>
+          </div>
+          <div class="coming-soon-badge">JULY 2026</div>
+        </div>
+        <div class="drop-small">
+          <div class="drop-img bg-05" style="height:100%;display:flex;align-items:center;justify-content:center;">
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:60px;color:rgba(245,240,232,0.05);">HEAT</div>
+          </div>
+          <div class="drop-label">
+            <p class="drop-label-tag">Collab</p>
+            <p class="drop-label-title" style="font-size:20px;">HEAT WAVE</p>
+          </div>
+          <div class="coming-soon-badge">AUG 2026</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECOND TICKER -->
+  <div class="ticker" style="background: var(--gray); border-top:1px solid var(--border); border-bottom:1px solid var(--border);">
+    <div class="ticker-track" style="animation-direction:reverse;">
+      <span style="color:var(--muted);">FREE SHIPPING ABOVE ₹2000</span>
+      <span style="color:var(--red);">★★★★★</span>
+      <span style="color:var(--muted);">COD AVAILABLE</span>
+      <span style="color:var(--red);">★★★★★</span>
+      <span style="color:var(--muted);">7-DAY EASY RETURNS</span>
+      <span style="color:var(--red);">★★★★★</span>
+      <span style="color:var(--muted);">FREE SHIPPING ABOVE ₹2000</span>
+      <span style="color:var(--red);">★★★★★</span>
+      <span style="color:var(--muted);">COD AVAILABLE</span>
+      <span style="color:var(--red);">★★★★★</span>
+      <span style="color:var(--muted);">7-DAY EASY RETURNS</span>
+      <span style="color:var(--red);">★★★★★</span>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-grid">
+      <div>
+        <p class="footer-brand-name">VAN<span>Z</span></p>
+        <p class="footer-brand-desc">
+          Street culture forged in raw ambition.
+          Not for everyone — made for those who know.
+        </p>
+      </div>
+      <div>
+        <p class="footer-col-title">Shop</p>
+        <ul class="footer-links">
+          <li><a href="#">New Drops</a></li>
+          <li><a href="#">Jackets</a></li>
+          <li><a href="#">Hoodies</a></li>
+          <li><a href="#">Bottoms</a></li>
+          <li><a href="#">Accessories</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-col-title">Info</p>
+        <ul class="footer-links">
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Lookbook</a></li>
+          <li><a href="#">Stockists</a></li>
+          <li><a href="#">Collabs</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-col-title">Support</p>
+        <ul class="footer-links">
+          <li><a href="#">Shipping</a></li>
+          <li><a href="#">Returns</a></li>
+          <li><a href="#">Size Guide</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2026 VANZ — All rights reserved</p>
+      <p class="footer-copy">Built in the streets.</p>
+    </div>
+  </footer>
+
+  <style>
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  </style>
+
+</body>
+</html>
